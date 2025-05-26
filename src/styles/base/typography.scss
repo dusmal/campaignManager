@@ -1,0 +1,7 @@
+@use "variables" as *;
+
+body {
+    font-size: 1.8rem;
+    font-family: $font-primary;
+    font-weight: $weight-regular;
+}
