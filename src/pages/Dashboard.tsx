@@ -11,24 +11,26 @@ const Dashboard = () => {
     const accountData = useAccount();
 
     return (
-        <>
-            <Header />
-            <div className="campaign-list">
-                <h2>Campaigns</h2>
-                <p>{accountData.balance}</p>
-                {campaignData.campaigns.length === 0 ? (
-                    <p>No campaigns found.</p>
-                ) : (
-                    <ul>
-                        {campaignData.campaigns.map((campaign) => (
-                            <li key={campaign.id}>
-                                <h3>{campaign.name}</h3>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+        <div className="dashboard">
+            <div className="wrapper">
+                <Header />
+                {/* <div className="campaign-list">
+                    <h2>Campaigns</h2>
+                    <p>{accountData.balance}</p>
+                    {campaignData.campaigns.length === 0 ? (
+                        <p>No campaigns found.</p>
+                    ) : (
+                        <ul>
+                            {campaignData.campaigns.map((campaign) => (
+                                <li key={campaign.id}>
+                                    <h3>{campaign.name}</h3>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div> */}
             </div>
-        </>
+        </div>
     );
 };
 

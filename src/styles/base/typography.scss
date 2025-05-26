@@ -5,3 +5,20 @@ body {
     font-family: $font-primary;
     font-weight: $weight-regular;
 }
+
+.header {
+    text-transform: uppercase;
+    color: $accent-dark;
+
+    &__title {
+        font-size: 1.5rem;
+
+        @media (max-width: 768px) {
+            font-size: 1.2rem;
+        }
+    }
+
+    &__balance-text {
+        font-size: 1.2rem;
+    }
+}
