@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/campaignManager/static/css/main.5215df3a.css",
+    "main.js": "/campaignManager/static/js/main.5ae08b73.js",
+    "index.html": "/campaignManager/index.html",
+    "main.5215df3a.css.map": "/campaignManager/static/css/main.5215df3a.css.map",
+    "main.5ae08b73.js.map": "/campaignManager/static/js/main.5ae08b73.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5215df3a.css",
+    "static/js/main.5ae08b73.js"
+  ]
+}
