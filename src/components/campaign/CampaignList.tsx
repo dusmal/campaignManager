@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import { Campaign } from '../../types/campaignTypes';
-
-interface ICampaignListProps {
-    campaigns: Campaign[];
-    loading: boolean;
-    error: string | null;
-    onEdit: (campaign: Campaign) => void;
-    onDelete: (campaign: Campaign) => void;
-}
+import { Campaign, ICampaignListProps } from '../../types/campaignTypes';
 
 const CampaignList = ({ campaigns, loading, error, onEdit, onDelete }: ICampaignListProps) => {
     if (loading) return <div className="campaign-list__loading">Loading campaigns...</div>;
-    if (error) return <div className="campaign-list__error">{error}</div>;
+    // if (error) return <div className="campaign-list__error">{error}</div>;
 
     return (
         <section className="campaign-list">

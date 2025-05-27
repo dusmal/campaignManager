@@ -74,7 +74,12 @@ const AddNewButton: React.FC<AddNewButtonProps> = ({
 
             {(isModalOpen) && (
                 loading ? (
-                    <div className="loading-indicator">Loading...</div>
+                    <div className="loading-backdrop">
+                        <div className="loading-indicator">
+                            <div className="loading-indicator__spinner"></div>
+                            <div className="loading-indicator__text">Loading campaign data...</div>
+                        </div>
+                    </div>
                 ) : (
                     <CampaignModal
                         onClose={closeModal}

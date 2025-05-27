@@ -1,33 +1,15 @@
 import React, { useState, useEffect, FormEvent, MouseEvent, KeyboardEvent } from 'react';
+import { ICampaignModalProps, IFormErrors, IFormTouched, IFormValues } from '../../types/campaignTypes';
 
-interface FormValues {
-    name: string;
-    keywords: string[];
-    bidAmount: string;
-    campaignFund: string;
-    town: string;
-    radius: string;
-    status: boolean;
-}
-
-interface CampaignModalProps {
-    onClose: () => void;
-    onSubmit: (campaignData: any) => void;
-    availableTowns: { name: string }[];
-    availableKeywords: string[];
-    minimumBidAmount: number;
-    initialValues?: any;
-}
-
-const CampaignModal: React.FC<CampaignModalProps> = ({
+const CampaignModal = ({
     onClose,
     onSubmit,
     availableTowns,
     availableKeywords,
     minimumBidAmount,
     initialValues
-}) => {
-    const [formValues, setFormValues] = useState<FormValues>({
+}: ICampaignModalProps) => {
+    const [formValues, setFormValues] = useState<IFormValues>({
         name: initialValues?.name || '',
         keywords: initialValues?.keywords || [],
         bidAmount: initialValues?.bidAmount?.toString() || '',
@@ -37,9 +19,28 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
         status: initialValues?.status !== undefined ? initialValues.status : true
     });
 
+    const [formErrors, setFormErrors] = useState<IFormErrors>({
+        name: false,
+        keywords: false,
+        bidAmount: false,
+        campaignFund: false,
+        town: false,
+        radius: false
+    });
+
+    const [formTouched, setFormTouched] = useState<IFormTouched>({
+        name: false,
+        keywords: false,
+        bidAmount: false,
+        campaignFund: false,
+        town: false,
+        radius: false
+    });
+
     const [keywordInput, setKeywordInput] = useState<string>('');
     const [keywordSuggestions, setKeywordSuggestions] = useState<string[]>([]);
     const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+    const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -57,13 +58,28 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
         };
     }, [onClose]);
 
+    useEffect(() => {
+        validateForm();
+    }, [formValues]);
+
+    const validateForm = (): void => {
+        setFormErrors({
+            name: formValues.name.trim() === '',
+            keywords: formValues.keywords.length === 0,
+            bidAmount: !formValues.bidAmount || parseFloat(formValues.bidAmount) < minimumBidAmount,
+            campaignFund: !formValues.campaignFund || parseFloat(formValues.campaignFund) <= 0,
+            town: formValues.town === '',
+            radius: !formValues.radius || parseInt(formValues.radius) < 1
+        });
+    };
+
     const handleModalContentClick = (e: MouseEvent<HTMLDivElement>): void => {
         e.stopPropagation();
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
         const { id, value, type } = e.target;
-        const fieldName = id.replace('campaign-form__', '');
+        const fieldName = id.replace('campaign-form__', '') as keyof IFormValues;
 
         if (type === 'checkbox') {
             const checkbox = e.target as HTMLInputElement;
@@ -77,6 +93,20 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                 [fieldName]: value
             });
         }
+
+        if (!formTouched[fieldName as keyof IFormTouched]) {
+            setFormTouched({
+                ...formTouched,
+                [fieldName]: true
+            });
+        }
+    };
+
+    const handleBlur = (fieldName: keyof IFormTouched): void => {
+        setFormTouched({
+            ...formTouched,
+            [fieldName]: true
+        });
     };
 
     const handleKeywordInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -104,6 +134,13 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
         }
         setKeywordInput('');
         setShowSuggestions(false);
+
+        if (!formTouched.keywords) {
+            setFormTouched({
+                ...formTouched,
+                keywords: true
+            });
+        }
     };
 
     const removeKeyword = (keyword: string): void => {
@@ -111,6 +148,13 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
             ...formValues,
             keywords: formValues.keywords.filter(k => k !== keyword)
         });
+
+        if (!formTouched.keywords) {
+            setFormTouched({
+                ...formTouched,
+                keywords: true
+            });
+        }
     };
 
     const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -122,19 +166,36 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const newCampaign = {
-            id: initialValues?.id,
-            name: formValues.name,
-            keywords: formValues.keywords,
-            bidAmount: parseFloat(formValues.bidAmount) || 0,
-            campaignFund: parseFloat(formValues.campaignFund) || 0,
-            town: formValues.town,
-            radius: parseInt(formValues.radius) || 0,
-            status: formValues.status,
-            dateCreated: initialValues?.dateCreated || new Date().toISOString()
-        };
+        setIsFormSubmitted(true);
 
-        onSubmit(newCampaign);
+        setFormTouched({
+            name: true,
+            keywords: true,
+            bidAmount: true,
+            campaignFund: true,
+            town: true,
+            radius: true
+        });
+
+        validateForm();
+
+        const hasErrors = Object.values(formErrors).some(error => error);
+
+        if (!hasErrors) {
+            const newCampaign = {
+                id: initialValues?.id,
+                name: formValues.name,
+                keywords: formValues.keywords,
+                bidAmount: parseFloat(formValues.bidAmount) || 0,
+                campaignFund: parseFloat(formValues.campaignFund) || 0,
+                town: formValues.town,
+                radius: parseInt(formValues.radius) || 0,
+                status: formValues.status,
+                dateCreated: initialValues?.dateCreated || new Date().toISOString()
+            };
+
+            onSubmit(newCampaign);
+        }
     };
 
     return (
@@ -157,8 +218,12 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                 placeholder="Enter campaign name"
                                 value={formValues.name}
                                 onChange={handleInputChange}
+                                onBlur={() => handleBlur('name')}
                                 required
                             />
+                            {(formTouched.name || isFormSubmitted) && formErrors.name && (
+                                <div className="campaign-form__error">Campaign name is required</div>
+                            )}
                         </div>
 
                         <div className="campaign-form__group">
@@ -188,6 +253,7 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                         value={keywordInput}
                                         onChange={handleKeywordInputChange}
                                         onKeyDown={handleKeywordKeyDown}
+                                        onBlur={() => handleBlur('keywords')}
                                     />
                                     {showSuggestions && keywordSuggestions.length > 0 && (
                                         <div className="campaign-form__keyword-suggestions">
@@ -204,7 +270,7 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                     )}
                                 </div>
                             </div>
-                            {formValues.keywords.length === 0 && (
+                            {(formTouched.keywords || isFormSubmitted) && formErrors.keywords && (
                                 <div className="campaign-form__error">At least one keyword is required</div>
                             )}
                         </div>
@@ -221,8 +287,12 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                     placeholder={`Min: $${minimumBidAmount.toFixed(2)}`}
                                     value={formValues.bidAmount}
                                     onChange={handleInputChange}
+                                    onBlur={() => handleBlur('bidAmount')}
                                     required
                                 />
+                                {(formTouched.bidAmount || isFormSubmitted) && formErrors.bidAmount && (
+                                    <div className="campaign-form__error">Bid amount must be at least ${minimumBidAmount.toFixed(2)}</div>
+                                )}
                             </div>
 
                             <div className="campaign-form__group">
@@ -236,8 +306,12 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                     placeholder="0.00"
                                     value={formValues.campaignFund}
                                     onChange={handleInputChange}
+                                    onBlur={() => handleBlur('campaignFund')}
                                     required
                                 />
+                                {(formTouched.campaignFund || isFormSubmitted) && formErrors.campaignFund && (
+                                    <div className="campaign-form__error">Campaign fund must be greater than $0</div>
+                                )}
                             </div>
                         </div>
 
@@ -248,6 +322,7 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                 id="campaign-form__town"
                                 value={formValues.town}
                                 onChange={handleInputChange}
+                                onBlur={() => handleBlur('town')}
                                 required
                             >
                                 <option value="">Select a town</option>
@@ -255,6 +330,9 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                     <option key={index} value={town.name}>{town.name}</option>
                                 ))}
                             </select>
+                            {(formTouched.town || isFormSubmitted) && formErrors.town && (
+                                <div className="campaign-form__error">Please select a town</div>
+                            )}
                         </div>
 
                         <div className="campaign-form__group">
@@ -267,8 +345,12 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                                 placeholder="Enter radius"
                                 value={formValues.radius}
                                 onChange={handleInputChange}
+                                onBlur={() => handleBlur('radius')}
                                 required
                             />
+                            {(formTouched.radius || isFormSubmitted) && formErrors.radius && (
+                                <div className="campaign-form__error">Radius must be at least 1 km</div>
+                            )}
                         </div>
 
                         <div className="campaign-form__group campaign-form__group--checkbox">
@@ -291,7 +373,6 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
                             <button
                                 type="submit"
                                 className="campaign-form__button campaign-form__button--primary"
-                                disabled={formValues.keywords.length === 0}
                             >
                                 {initialValues ? 'Update Campaign' : 'Create Campaign'}
                             </button>
@@ -304,4 +385,3 @@ const CampaignModal: React.FC<CampaignModalProps> = ({
 };
 
 export default CampaignModal;
-

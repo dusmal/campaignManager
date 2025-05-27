@@ -145,18 +145,6 @@ const mockData = {
         { "name": "Gdańsk" },
         { "name": "Szczecin" },
         { "name": "Bydgoszcz" },
-        { "name": "Lublin" },
-        { "name": "Katowice" },
-        { "name": "Gdynia" },
-        { "name": "Częstochowa" },
-        { "name": "Radom" },
-        { "name": "Białystok" },
-        { "name": "Toruń" },
-        { "name": "Sosnowiec" },
-        { "name": "Rzeszów" },
-        { "name": "Kielce" },
-        { "name": "Gliwice" },
-        { "name": "Zabrze" }
     ],
     "availableKeywords": [
         "shoes", "summer footwear", "sandals", "beach shoes",
