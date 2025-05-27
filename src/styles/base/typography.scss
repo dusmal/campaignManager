@@ -1,0 +1,114 @@
+@use "variables" as *;
+
+body {
+    font-size: 1.8rem;
+    font-family: $font-primary;
+    font-weight: $weight-regular;
+}
+
+.header {
+    text-transform: lowercase;
+    color: white;
+
+    &__title {
+        font-size: 1.5rem;
+
+        @media (max-width: 768px) {
+            font-size: 1.4rem;
+        }
+    }
+
+    &__balance-text {
+        font-size: 1.4rem;
+    }
+
+    &__balance-amount {
+        font-weight: $weight-bold;
+        font-size: 1.5rem;
+    }
+}
+
+.add-new-button {
+    color: white;
+}
+
+.campaign-modal {
+    &__title {
+        font-size: 1.5rem;
+        font-weight: $weight-bold;
+    }
+}
+
+.campaign-form {
+    &__group {
+        &--checkbox {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__label {
+        font-size: 1.5rem;
+        font-weight: $weight-medium;
+        color: $dark-blue;
+
+
+    }
+}
+
+
+
+.campaign-list {
+
+    &__table {
+        font-size: 1.5rem;
+
+        th,
+        td {
+            text-align: left;
+        }
+
+        th {
+            color: $primary-violet-dark;
+            font-weight: $weight-medium;
+        }
+    }
+
+    &__empty {
+        font-style: italic;
+    }
+
+
+    &__status {
+        font-size: 1.3rem;
+        font-weight: $weight-medium;
+
+        &--active {
+            color: $primary-violet;
+        }
+
+        &--inactive {
+            color: $primary-red;
+        }
+    }
+
+    &__action-btn {
+        font-size: 1.3rem;
+        font-weight: $weight-medium;
+
+        &--edit {
+            color: $primary-violet;
+
+            &:hover {
+                color: $light-white;
+            }
+        }
+
+        &--delete {
+            color: $primary-red;
+
+            &:hover {
+                color: $light-white;
+            }
+        }
+    }
+}
