@@ -1,37 +1,50 @@
-import { useState, useEffect } from 'react';
-import { accountService } from '../services/accountClient';
-import { IAccount } from '../types/campaignTypes';
+import { useState, useEffect, useCallback } from "react";
+import * as accountStore from "../stores/accountStore";
 
 export const useAccount = () => {
-    const [balance, setBalance] = useState<number>(0);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const fetchBalance = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const balance = await accountService.getBalance();
-            setBalance(balance);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Failed to fetch account balance');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const fetchBalance = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-    const updateBalance = (amount: number) => {
-        setBalance(prevBalance => prevBalance + amount);
-    };
+    try {
+      const currentBalance = await accountStore.getBalance();
+      setBalance(currentBalance);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch balance");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    useEffect(() => {
-        fetchBalance();
-    }, []);
+  const updateBalance = useCallback(async (amount: number) => {
+    setLoading(true);
+    setError(null);
 
-    return {
-        balance,
-        loading,
-        error,
-        updateBalance
-    };
+    try {
+      const newBalance = await accountStore.updateBalance(amount);
+      setBalance(newBalance);
+      return newBalance;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update balance");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBalance();
+  }, [fetchBalance]);
+
+  return {
+    balance,
+    loading,
+    error,
+    updateBalance,
+    refetch: fetchBalance,
+  };
 };

@@ -2,10 +2,10 @@
 
 .header {
     display: flex;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba($light-gray, 0.6);
-    // color: $dark-blue;
+    background-color: rgba($primary-violet-dark, 1);
     box-shadow: 2px 2px 4px rgba($dark-blue, 0.3);
     border-radius: 8px;
     padding: 12px 20px;

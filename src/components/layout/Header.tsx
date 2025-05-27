@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useAccount } from '../../hooks/useAccount';
+interface HeaderProps {
+    balance: number;
+}
 
-const Header = () => {
-    const { balance } = useAccount();
-
+const Header: React.FC<HeaderProps> = ({ balance }) => {
     return (
         <header className="header">
-            <h1 className="header__title">Campaign Manager</h1>
+            <h1 className="header__title">⚪ Campaign Manager</h1>
             <div className="header__balance">
-                <p className="header__balance-text">Account Balance:
-                    <strong className="header__balance-amount"> {balance.toFixed(2)}€</strong>
+                <p className="header__balance-text">
+                    Account Balance: <strong className="header__balance-amount">{balance.toFixed(2)}€</strong>
                 </p>
             </div>
         </header>
