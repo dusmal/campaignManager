@@ -32,8 +32,6 @@ export interface UpdateCampaignRequest {
   dateCreated?: string;
 }
 
-
-
 export interface IAccount {
   balance: number;
 }

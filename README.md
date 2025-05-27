@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Campaign Management CRUD Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 📋 Project Overview
 
-## Available Scripts
+This application was built as a technical assessment to demonstrate proficiency in React development, responsive design, and modern frontend practices. Users can create, read, update, and delete advertising campaigns with form validation, balance management, and some limited keyboard accessibility.
 
-In the project directory, you can run:
+### 🚀 Live Demo
 
-### `npm start`
+[View Live Application](http://dusmal.github.io/XXXXXXXXXXX)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 🛠 Technical Stack
 
-### `npm test`
+- **React 19** with TypeScript
+- **SCSS** (no external CSS frameworks)
+- **Custom Hooks** for state management
+- **Mock Data Stores** simulating backend operations with 75ms delay
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 📁 Project Structure
 
-### `npm run build`
+```
+src/
+├── components/         # Reusable UI components
+│   ├── campaign/       # Campaign-specific components
+│   ├── layout/         # Layout components
+│   └── ui/             # Generic UI components
+├── hooks/              # Custom React hooks
+├── pages/              # Page components
+├── stores/             # Mock data services
+├── types/              # TypeScript type definitions
+├── utilities/          # Utilities
+└── styles/             # SCSS stylesheets
+    ├── base/           # Base styles and variables
+    ├── components/     # Component-specific styles
+    ├── layout/         # Layout-specific styles
+    ├── pages/          # Page-specific styles
+    └── ui/             # UI component styles
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Running the project
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm install
+npm start
+```

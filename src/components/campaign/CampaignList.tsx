@@ -3,7 +3,6 @@ import { Campaign, ICampaignListProps } from '../../types/campaignTypes';
 
 const CampaignList = ({ campaigns, loading, error, onEdit, onDelete }: ICampaignListProps) => {
     if (loading) return <div className="campaign-list__loading">Loading campaigns...</div>;
-    // if (error) return <div className="campaign-list__error">{error}</div>;
 
     return (
         <section className="campaign-list">
@@ -27,7 +26,7 @@ const CampaignList = ({ campaigns, loading, error, onEdit, onDelete }: ICampaign
                             campaigns.map(campaign => (
                                 <tr key={campaign.id}>
                                     <td>{campaign.name}</td>
-                                    <td>${campaign.campaignFund.toFixed(2)}</td>
+                                    <td>{campaign.campaignFund.toFixed(2)} €</td>
                                     <td>
                                         <span className={`campaign-list__status campaign-list__status--${campaign.status ? 'active' : 'inactive'}`}>
                                             {campaign.status ? 'Active' : 'Inactive'}

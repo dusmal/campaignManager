@@ -6,7 +6,7 @@ import mockData from "../utilities/mockData";
 let campaignStore: Campaign[] = [...mockData.campaigns];
 let nextId = Math.max(...campaignStore.map(c => c.id), 0) + 1;
 
-const delay = (ms: number = 300) => new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number = 75) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const getAllCampaigns = async (): Promise<Campaign[]> => {
   await delay();

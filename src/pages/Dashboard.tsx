@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Campaign, CreateCampaignRequest } from '../types/campaignTypes';
 import Header from '../components/layout/Header';
 import CampaignList from '../components/campaign/CampaignList';
-import AddNewButton from '../components/ui/addNewButton';
 import { useAccount } from '../hooks/useAccount';
 import { useCampaigns } from '../hooks/useCampaigns';
+import { useModal } from '../hooks/useModal';
+import CampaignModalContainer from '../components/campaign/CampaignModalContainer';
+import AddNewButton from '../components/ui/AddNewButton';
 
 const Dashboard = () => {
   const [campaignToEdit, setCampaignToEdit] = useState<Campaign | null>(null);
-
+  const { isOpen: isModalOpen, openModal, closeModal } = useModal();
   const {
     campaigns,
     loading: campaignsLoading,
@@ -49,26 +51,48 @@ const Dashboard = () => {
     await updateBalance(campaign.campaignFund);
   };
 
+  const handleModalSubmit = async (campaignData: Campaign) => {
+    if (campaignToEdit) {
+      await handleUpdateCampaign(campaignData);
+    } else {
+      await handleCreateCampaign(campaignData);
+    }
+    closeModal();
+    setCampaignToEdit(null);
+  };
+
+  const handleEditCampaign = (campaign: Campaign) => {
+    setCampaignToEdit(campaign);
+    openModal();
+  };
+
+  const handleModalClose = () => {
+    closeModal();
+    setCampaignToEdit(null);
+  };
+
   return (
     <div className="dashboard">
       <div className="wrapper">
         <Header balance={balance} />
         <div className="campaign-wrapper">
-          <AddNewButton
-            onCreateCampaign={handleCreateCampaign}
-            onUpdateCampaign={handleUpdateCampaign}
-            campaignToEdit={campaignToEdit}
-            clearEditCampaign={() => setCampaignToEdit(null)}
-          />
+          <AddNewButton onClick={openModal} />
           <CampaignList
             campaigns={campaigns}
             loading={campaignsLoading}
             error={campaignsError}
-            onEdit={setCampaignToEdit}
+            onEdit={handleEditCampaign}
             onDelete={handleDeleteCampaign}
           />
         </div>
       </div>
+
+      <CampaignModalContainer
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        onSubmit={handleModalSubmit}
+        initialValues={campaignToEdit}
+      />
     </div>
   );
 };
