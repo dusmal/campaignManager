@@ -6,7 +6,7 @@ This application was built as a technical assessment to demonstrate proficiency 
 
 ### 🚀 Live Demo
 
-[View Live Application](http://dusmal.github.io/XXXXXXXXXXX)
+[View Live Application](https://dusmal.github.io/campaignManager)
 
 
 ### 🛠 Technical Stack
